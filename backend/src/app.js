@@ -14,7 +14,13 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" })) //config for url 
 app.use(express.static("public"))
 app.use(cookieParser())
 
+
+//quiz route
 import quizRoutes from "./routes/quiz.routes.js";
 app.use("/api/v1/quiz", quizRoutes);
+
+//book route
+import bookRouter from "./routes/book.routes.js";
+app.use("/api/v1/book",bookRouter);
 
 export default app;
