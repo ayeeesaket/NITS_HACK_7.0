@@ -14,8 +14,7 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" })) //config for url 
 app.use(express.static("public"))
 app.use(cookieParser())
 
-// app.route("/hello").get((req, res) => {
-//     res.status(200).json("Hello");
-// })
+import quizRoutes from "./routes/quiz.routes.js";
+app.use("/api/v1/quiz", quizRoutes);
 
 export default app;
