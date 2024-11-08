@@ -33,27 +33,22 @@ const addQuiz = asyncHandler(async (req, res) => {
 });
 
 const getQuiz = asyncHandler(async (req, res) => {
+    const { title } = req.body;
+    if (!title) {
+        throw new ApiError(404, "All Fields Are Required.");
+    }
+    const foundQuiz = await Quiz.find({
+        category: title,
+    });
     try {
-        const count = Quiz.countDocuments;
-        const randomIndex = Math.floor(Math.random() * count);
-        const randomQuiz = await Quiz.findOne().skip(randomIndex);
-        if (!randomQuiz) {
-            return res
-                .status(404)
-                .json(
-                    new ApiResponse(
-                        404,
-                        {},
-                        "Quiz Not Found !"
-                    )
-                );
-        }
+        const length = foundQuiz.length;
+        const randomIndex = Math.floor(Math.random() * length);
         return res
             .status(200)
             .json(
                 new ApiResponse(
                     200,
-                    randomQuiz,
+                    foundQuiz[randomIndex],
                     "Random Quiz Fetched !"
                 )
             );
