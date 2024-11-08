@@ -1,0 +1,15 @@
+<svg width="246" height="246" viewBox="0 0 246 246" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Home LOGO">
+<path id="Star 1" d="M37.5611 122.942L80.2517 49L165.633 49L208.323 122.942L165.633 196.885L80.2517 196.885L37.5611 122.942Z" stroke="white" stroke-width="8"/>
+<g id="Home">
+<g id="Bars">
+<rect id="Rectangle 1" x="90" y="109" width="17" height="29" rx="3" fill="white"/>
+<path id="Rectangle 3" d="M134 112C134 110.343 135.343 109 137 109H148C149.657 109 151 110.343 151 112V135C151 136.657 149.657 138 148 138H137C135.343 138 134 136.657 134 135V112Z" fill="white"/>
+<rect id="Rectangle 2" x="112" y="109" width="17" height="29" rx="3" fill="white"/>
+</g>
+<path id="Cap" fill-rule="evenodd" clip-rule="evenodd" d="M153.991 95L121 80L88.0086 95H85C82.7908 95 81 96.7909 81 99V103C81 105.209 82.7908 107 85 107H157C159.209 107 161 105.209 161 103V99C161 96.7909 159.209 95 157 95H153.991Z" fill="white"/>
+<path id="Rectangle 5" d="M81 141H160V145C160 147.209 158.209 149 156 149H85C82.7909 149 81 147.209 81 145V141Z" fill="white"/>
+<path id="Rectangle 6" d="M74 151H167V155C167 157.209 165.209 159 163 159H78C75.7909 159 74 157.209 74 155V151Z" fill="white"/>
+</g>
+</g>
+</svg>
