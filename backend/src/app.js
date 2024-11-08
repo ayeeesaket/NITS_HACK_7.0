@@ -20,7 +20,11 @@ import quizRoutes from "./routes/quiz.routes.js";
 app.use("/api/v1/quiz", quizRoutes);
 
 //book route
-import bookRouter from "./routes/book.routes.js";
-app.use("/api/v1/book",bookRouter);
+import bookRoutes from "./routes/book.routes.js";
+app.use("/api/v1/book", bookRoutes);
+
+//user route
+import userRoutes from "./routes/user.routes.js";
+app.use("/api/v1/user", userRoutes);
 
 export default app;
