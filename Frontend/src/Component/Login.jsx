@@ -6,8 +6,10 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
+import { SyncLoader } from "react-spinners";
 
 const Login = () => {
+  const [isLoader, setIsLoader] = useState(false);
   const { setIsLogged } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +17,7 @@ const Login = () => {
 
   const getInputData = async (e) => {
     e.preventDefault();
+    setIsLoader(true); // Show loader when login starts
 
     const user = { email, password };
     try {
@@ -36,6 +39,7 @@ const Login = () => {
       toast.error(errorMessage);
     }
 
+    setIsLoader(false); // Hide loader after login attempt
     setEmail("");
     setPassword("");
   };
@@ -43,6 +47,14 @@ const Login = () => {
   return (
     <>
       <Navbar />
+
+      {/* Loader Overlay */}
+      {isLoader && (
+        <div className="loader-overlay">
+          <SyncLoader color="#9bff89" margin={10} size={30} />
+        </div>
+      )}
+
       <form className="login-form" onSubmit={getInputData}>
         <FaRegUserCircle size={50} />
         <div className="flex input-div">
@@ -69,6 +81,21 @@ const Login = () => {
           CONTINUE
         </button>
       </form>
+
+      <style jsx>{`
+        .loader-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+        }
+      `}</style>
     </>
   );
 };

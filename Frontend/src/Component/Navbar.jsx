@@ -29,16 +29,23 @@ const Navbar = () => {
           <div className="learn nav-but" onClick={() => navigate("/Quiz")}>
             Quiz
           </div>
-          <div className="actsandrules nav-but" onClick={() => navigate("/Book")}>
+          <div
+            className="actsandrules nav-but"
+            onClick={() => navigate("/Book")}
+          >
             Acts and Rules
           </div>
           <div className="about nav-but">About</div>
         </div>
         <div className="navbar-right flex gap-10 pt-8">
           <div className="create nav-but" onClick={() => navigate("/Register")}>
-            Create Account
+            {isLogged ? "" : "Create "}
+            
           </div>
-          <div className="login nav-but" onClick={isLogged ? handleLogout : () => navigate("/")}>
+          <div
+            className="login nav-but"
+            onClick={isLogged ? handleLogout : () => navigate("/")}
+          >
             {isLogged ? "Logout" : "Login"}
           </div>
         </div>
