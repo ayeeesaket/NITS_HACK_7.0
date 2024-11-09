@@ -5,9 +5,9 @@ import { Quiz } from "../models/quiz.model.js";
 
 const addQuiz = asyncHandler(async (req, res) => {
     
-    const { category, question, option1, option2, option3, option4 } = req.body;
+    const { category, question, option1, option2, option3, option4 , answer } = req.body;
     
-    if (!category || !question || !option1 || !option2 || !option3 || !option4) {
+    if (!category || !question || !option1 || !option2 || !option3 || !option4 || !answer) {
         throw new ApiError(404, "All Fields Not Found.");
     }
     
@@ -18,7 +18,8 @@ const addQuiz = asyncHandler(async (req, res) => {
             option1,
             option2,
             option3,
-            option4
+            option4,
+            answer
         });
         return res
             .status(201)
