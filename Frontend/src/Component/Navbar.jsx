@@ -33,20 +33,20 @@ const Navbar = () => {
           </div>
         </div>
         <div className="navbar-mid flex gap-10 justify-center pt-8">
-          <div className="home">Home</div>
-          <div className="learn" onClick={handleClick2}>
-            Learn
+          <div className="home nav-but">Home</div>
+          <div className="learn nav-but" onClick={handleClick2}>
+            Quiz
           </div>
-          <div className="actsandrules" onClick={handleClick3}>
+          <div className="actsandrules nav-but" onClick={handleClick3}>
             Acts and Rules
           </div>
-          <div className="about">About</div>
+          <div className="about nav-but ">About</div>
         </div>
         <div className="navbar-right flex gap-10 pt-8">
-          <div className="create" onClick={handleClick0}>
+          <div className="create nav-but" onClick={handleClick0}>
             Create Account
           </div>
-          <div className="login" onClick={handleClick1}>
+          <div className="login nav-but " onClick={handleClick1}>
             Login
           </div>
         </div>
