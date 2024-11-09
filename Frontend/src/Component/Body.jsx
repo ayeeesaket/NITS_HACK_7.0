@@ -9,6 +9,7 @@ import Video3 from "./Video3";
 import Video1 from "./Video1";
 import Quiz from "./Quiz";
 import Book from "./Book";
+
 const Body = () => {
   const approuter = createBrowserRouter([
     {

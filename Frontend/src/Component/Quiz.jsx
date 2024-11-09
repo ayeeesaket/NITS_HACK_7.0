@@ -7,6 +7,7 @@ const Quiz = () => {
   const [quizData, setQuizData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [correctAnswer, setCorrectAnswer] = useState(null); // Store the correct answer
 
   const fetchQuiz = async () => {
     setLoading(true);
@@ -18,6 +19,7 @@ const Quiz = () => {
       );
       setQuizData(response.data.data);
       setSelectedAnswer(null); // Reset selected answer
+      setCorrectAnswer(response.data.data.correctAnswer); // Set correct answer
     } catch (error) {
       console.error("Error fetching quiz data:", error);
     } finally {
@@ -25,10 +27,13 @@ const Quiz = () => {
     }
   };
 
-  const handleOptionClick = (option, index) => {
+  const handleOptionClick = (option) => {
     setSelectedAnswer(option);
-    // Fetch a new question after any option is selected
-    fetchQuiz();
+
+    // Wait for 1 second before fetching the next quiz
+    setTimeout(() => {
+      fetchQuiz();
+    }, 1000); // 1 second delay
   };
 
   return (
@@ -57,21 +62,25 @@ const Quiz = () => {
                 quizData.option2,
                 quizData.option3,
                 quizData.option4,
-              ].map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleOptionClick(option, index)}
-                  className={`option-btn px-4 py-2 rounded ${
-                    selectedAnswer
-                      ? option === quizData.option2 // Check if selected answer is option B
-                        ? "bg-green-500 text-white"
-                        : "bg-red-500 text-white"
-                      : "bg-white border"
-                  }`}
-                >
-                  {String.fromCharCode(65 + index)}. {option}
-                </button>
-              ))}
+              ].map((option, index) => {
+                const isCorrect = option === correctAnswer;
+                const isSelected = option === selectedAnswer;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => handleOptionClick(option)}
+                    className={`option-btn px-4 py-2 rounded ${
+                      isSelected
+                        ? isCorrect
+                          ? "bg-green-500 text-white" // Correct answer
+                          : "bg-red-500 text-white" // Incorrect answer
+                        : "bg-white border"
+                    }`}
+                  >
+                    {String.fromCharCode(65 + index)}. {option}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}

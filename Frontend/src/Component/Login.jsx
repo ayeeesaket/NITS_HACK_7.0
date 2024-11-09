@@ -1,93 +1,77 @@
 import React, { useState } from "react";
-const LoginPage = () => {
-  
+import { FaRegUserCircle } from "react-icons/fa";
+import { CiUser } from "react-icons/ci";
+import { CiLock } from "react-icons/ci";
+import Navbar from "./Navbar";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+const Login = () => {
+  const navigate = useNavigate()
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = (e) => {
+  const getInputData = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError("Please fill in all fields.");
-      return;
+    console.log(email, password);
+
+    setPassword("");
+    setEmail("");
+
+const user = { email, password };
+try {
+  const response = await axios.post(
+    "https://nits-hacks-backend.onrender.com/api/v1/user/login",
+    user,
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      withCredentials: true,
+
     }
+  );
+  navigate("/browse");
+  console.log(response);
+} catch (error) {
+  console.log(error);
 
-    setError("");
-    console.log("Logging in with:", email, password);
+  // Safely access the error message
+  const errorMessage =
+    error.response?.data?.message || "An error occurred. Please try again.";
+  toast.error(errorMessage); // Corrected access
+}
+
   };
-
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>Login</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={styles.input}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
-          required
-        />
-        {error && <p style={styles.error}>{error}</p>}
-        <button type="submit" style={styles.button}>
-          Login
-        </button>
+    <>
+      <Navbar />
+      <form className="login-form" onSubmit={getInputData}>
+        <FaRegUserCircle size={50} className="" />
+        <div className="flex input-div">
+          <input
+            className="input "
+            placeholder="EMAIL"
+            type="username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
+          <CiUser size={30} />
+        </div>
+        <div className="flex input-div">
+          <input
+            className="input "
+            placeholder="PASSWORD"
+            value={password}
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
+          <CiLock size={30} />
+        </div>
+        <button className="login-button">CONTINUE</button>
       </form>
-    </div>
+    </>
   );
 };
 
-const styles = {
-  container: {
-    maxWidth: "400px",
-    margin: "50px auto",
-    padding: "30px",
-    borderRadius: "10px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: "24px",
-    color: "#333",
-    marginBottom: "20px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  input: {
-    padding: "12px",
-    margin: "10px 0",
-    fontSize: "16px",
-    borderRadius: "6px",
-    border: "1px solid #ddd",
-    outline: "none",
-    transition: "border-color 0.3s",
-  },
-  button: {
-    padding: "12px",
-    fontSize: "16px",
-    color: "#fff",
-    backgroundColor: "#007bff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    marginTop: "10px",
-    transition: "background-color 0.3s",
-  },
-  error: {
-    color: "#ff4d4f",
-    fontSize: "14px",
-    marginTop: "10px",
-  },
-};
-
-export default LoginPage;
+export default Login;

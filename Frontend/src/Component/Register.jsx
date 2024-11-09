@@ -1,122 +1,93 @@
 import React, { useState } from "react";
+import Navbar from "./Navbar";
+import { FaRegUserCircle } from "react-icons/fa";
+import { CiUser } from "react-icons/ci";
+import { CiLock } from "react-icons/ci";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-const RegisterPage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+const Register = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [name, setFullname] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const validateForm = () => {
-    const { name, email, password } = formData;
-
-    if (!name || !email || !password) {
-      return "Please fill in all fields.";
-    }
-    if (password.length < 6) {
-      return "Password must be at least 6 characters.";
-    }
-
-    return "";
-  };
-
-  const handleSubmit = (e) => {
+  const getInputData = async (e) => {
     e.preventDefault();
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      return;
+    console.log(email, name, username, password);
+    setUsername("");
+    setPassword("");
+    setEmail("");
+    setFullname("");
+
+    const user = { email, username, password, name };
+    try {
+      const response = await axios.post(
+        "https://nits-hacks-backend.onrender.com/api/v1/user/register",
+        user,
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(response);
+      toast.success(response.data.message);
+    } catch (error) {
+      console.log(error);
+       toast.error(error.response.data.message);
     }
-
-    setError("");
-    setSuccess(true);
-
-    console.log("Registering user:", formData);
   };
-
   return (
-    <div style={styles.container}>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleChange}
-          style={styles.input}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          style={styles.input}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          style={styles.input}
-        />
-        {error && <p style={styles.error}>{error}</p>}
-        {success && <p style={styles.success}>Registration successful!</p>}
-        <button type="submit" style={styles.button}>
-          Register
-        </button>
+    <>
+      <Navbar />
+      <form className="login-form" onSubmit={getInputData}>
+        <FaRegUserCircle size={50} className="" />
+        <div className="flex input-div">
+          <input
+            className="input "
+            value={email}
+            type="email"
+            placeholder="EMAIL"
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
+          <CiUser size={30} />
+        </div>
+        <div className="flex input-div">
+          <input
+            className="input "
+            value={name}
+            type="text"
+            placeholder="FULLNAME"
+            onChange={(e) => setFullname(e.target.value)}
+          ></input>
+          <CiUser size={30} />
+        </div>
+        <div className="flex input-div">
+          <input
+            className="input "
+            value={username}
+            type="text"
+            placeholder="USERNAME"
+            onChange={(e) => setUsername(e.target.value)}
+          ></input>
+          <CiLock size={30} />
+        </div>
+        <div className="flex input-div">
+          <input
+            className="input"
+            value={password}
+            type="password"
+            placeholder="PASSWORD"
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
+          <CiLock size={30} />
+        </div>
+        <button className="login-button">CONTINUE</button>
       </form>
-    </div>
+    </>
   );
 };
 
-const styles = {
-  container: {
-    width: "300px",
-    margin: "0 auto",
-    padding: "20px",
-    textAlign: "center",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-  input: {
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    padding: "10px",
-    fontSize: "16px",
-    color: "#fff",
-    backgroundColor: "#28a745",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  error: {
-    color: "red",
-    fontSize: "14px",
-  },
-  success: {
-    color: "green",
-    fontSize: "14px",
-  },
-};
-
-export default RegisterPage;
+export default Register;
