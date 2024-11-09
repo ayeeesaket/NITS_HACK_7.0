@@ -6,7 +6,7 @@ import { SyncLoader } from "react-spinners"; // Import SyncLoader for the spinne
 
 const Book = () => {
   const [IsLoader, setIsLoader] = useState(true);
-  const [language, setLanguage] = useState("English"); // State for selected language
+  const [lang, setLanguage] = useState("English"); // State for selected language
   const backgroundImageUrl =
     "https://upload.wikimedia.org/wikipedia/commons/6/61/Constitution_of_India_%28calligraphic%29_109.jpg";
 
@@ -19,10 +19,13 @@ const Book = () => {
   useEffect(() => {
     const fetchChapterData = async (title, contentIds) => {
       try {
-        const response = await axios.post(
-          "https://nits-hacks-backend.onrender.com/api/v1/book/translateChapter",
-          { title, language } // Send language as a parameter
-        );
+        // Set the API URL based on the selected language
+        const apiUrl =
+          lang === "Hindi"
+            ? "https://nits-hacks-backend.onrender.com/api/v1/book/translateChapter"
+            : "https://nits-hacks-backend.onrender.com/api/v1/book/getChapter";
+
+        const response = await axios.post(apiUrl, { title, lang });
 
         const contentMap = contentIds.map((id, index) => ({
           id,
@@ -71,7 +74,7 @@ const Book = () => {
     };
 
     fetchAllData();
-  }, [language]); // Refetch content when language changes
+  }, [lang]); // Refetch content when language changes
 
   const splitContentInTwo = (contentArray) => {
     const mid = Math.ceil(contentArray.length / 2);
@@ -190,7 +193,7 @@ const Book = () => {
         </label>
         <select
           id="language"
-          value={language}
+          value={lang}
           onChange={(e) => setLanguage(e.target.value)}
           className="p-2 border rounded"
         >
