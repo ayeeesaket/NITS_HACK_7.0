@@ -18,6 +18,10 @@ const Navbar = () => {
     console.log("hello");
     navigate("/Book");
   };
+  const handleClick4 = () => {
+    console.log("hello");
+    navigate("/Browse");
+  };
   return (
     <>
       <div className="navbar pt-3 flex justify-around h-[17vh] w-[100vw] bg-white text-black font-bold align-middle">
@@ -33,7 +37,9 @@ const Navbar = () => {
           </div>
         </div>
         <div className="navbar-mid flex gap-10 justify-center pt-8">
-          <div className="home nav-but">Home</div>
+          <div className="home nav-but" onClick={handleClick4}>
+            Home
+          </div>
           <div className="learn nav-but" onClick={handleClick2}>
             Quiz
           </div>

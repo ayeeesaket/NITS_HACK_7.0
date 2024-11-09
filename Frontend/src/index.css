@@ -213,3 +213,11 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* preamble */
+.preamble{
+  position:relative;
+  top:240px;
+  font-size: 60px;
+  
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
