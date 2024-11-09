@@ -6,6 +6,7 @@ import { SyncLoader } from "react-spinners"; // Import SyncLoader for the spinne
 
 const Book = () => {
   const [IsLoader, setIsLoader] = useState(true);
+  const [language, setLanguage] = useState("English"); // State for selected language
   const backgroundImageUrl =
     "https://upload.wikimedia.org/wikipedia/commons/6/61/Constitution_of_India_%28calligraphic%29_109.jpg";
 
@@ -19,8 +20,8 @@ const Book = () => {
     const fetchChapterData = async (title, contentIds) => {
       try {
         const response = await axios.post(
-          "https://nits-hacks-backend.onrender.com/api/v1/book/getChapter",
-          { title }
+          "https://nits-hacks-backend.onrender.com/api/v1/book/translateChapter",
+          { title, language } // Send language as a parameter
         );
 
         const contentMap = contentIds.map((id, index) => ({
@@ -70,7 +71,7 @@ const Book = () => {
     };
 
     fetchAllData();
-  }, []);
+  }, [language]); // Refetch content when language changes
 
   const splitContentInTwo = (contentArray) => {
     const mid = Math.ceil(contentArray.length / 2);
@@ -83,9 +84,7 @@ const Book = () => {
 
   const pages = [
     {
-      content: <div className="">
-        Preamble
-      </div>,
+      content: <div className="preamble">CONSTITUTION</div>,
     },
     {
       content: (
@@ -185,6 +184,20 @@ const Book = () => {
   return (
     <>
       <Navbar />
+      <div className="language-selection flex justify-center items-center mt-4">
+        <label htmlFor="language" className="mr-2 font-semibold">
+          Select Language:
+        </label>
+        <select
+          id="language"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          className="p-2 border rounded"
+        >
+          <option value="English">English</option>
+          <option value="Hindi">Hindi</option>
+        </select>
+      </div>
       {IsLoader ? (
         <div
           className="loader-container flex justify-center items-center"

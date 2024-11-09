@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
 
@@ -9,6 +9,7 @@ const Quiz = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(null); // Store the correct answer
 
+  const message = document.getElementById("showMessage");
   const fetchQuiz = async () => {
     setLoading(true);
     try {
@@ -17,9 +18,11 @@ const Quiz = () => {
         "https://nits-hacks-backend.onrender.com/api/v1/quiz/getQuiz",
         { title: randomAct }
       );
+
       setQuizData(response.data.data);
       setSelectedAnswer(null); // Reset selected answer
-      setCorrectAnswer(response.data.data.correctAnswer); // Set correct answer
+      setCorrectAnswer(response.data.data.answer); // Set correct answer
+      message.innerText = "";
     } catch (error) {
       console.error("Error fetching quiz data:", error);
     } finally {
@@ -27,15 +30,31 @@ const Quiz = () => {
     }
   };
 
+  // const handleColor = useMemo(() => {
+  //   return (option) => {
+  //     setSelectedAnswer(option);
+
+  //     if (option === quizData[correctAnswer]) {
+  //       return `bg-green-500`;
+  //     } else {
+  //       return `bg-red-500`;
+  //     }
+  //   };
+  // }, [quizData, correctAnswer]);
+
   const handleOptionClick = (option) => {
     setSelectedAnswer(option);
 
-    // Wait for 1 second before fetching the next quiz
-    setTimeout(() => {
+    if (option === quizData[correctAnswer]) {
+      console.log("Yes, this is the correct answer!");
+      message.innerText = "Yes, this is the correct answer!";
       fetchQuiz();
-    }, 1000); // 1 second delay
+    } else {
+      console.log("No, this is not the correct answer.");
+      message.innerText = "No, this is not the correct answer.";
+    }
   };
-
+ 
   return (
     <>
       <Navbar />
@@ -63,19 +82,11 @@ const Quiz = () => {
                 quizData.option3,
                 quizData.option4,
               ].map((option, index) => {
-                const isCorrect = option === correctAnswer;
-                const isSelected = option === selectedAnswer;
                 return (
                   <button
                     key={index}
                     onClick={() => handleOptionClick(option)}
-                    className={`option-btn px-4 py-2 rounded ${
-                      isSelected
-                        ? isCorrect
-                          ? "bg-green-500 text-white" // Correct answer
-                          : "bg-red-500 text-white" // Incorrect answer
-                        : "bg-white border"
-                    }`}
+                    className={`option-btn px-4 py-2 rounded`}
                   >
                     {String.fromCharCode(65 + index)}. {option}
                   </button>
@@ -84,7 +95,7 @@ const Quiz = () => {
             </div>
           </div>
         )}
-
+        <div id="showMessage"></div>
         {quizData && (
           <button
             className="end-test mt-4 px-4 py-2 bg-red-500 text-white rounded"
