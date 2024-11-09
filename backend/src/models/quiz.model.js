@@ -26,6 +26,10 @@ const quizSchema = new Schema({
         type: String,
         required: true,
     },
+    answer: {
+        type:String,
+        required:true,
+    }
 }, {
     timestamps: true,
 });
