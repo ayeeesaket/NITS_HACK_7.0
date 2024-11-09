@@ -2,6 +2,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import  ApiError  from "../utils/ApiError.js";
 import  ApiResponse from "../utils/ApiResponse.js";
 import { Book } from "../models/book.model.js";
+import translator from "../utils/geminiTranslator.js";
 
 const addChapter = asyncHandler(async (req, res)=>{
     const { title, content } = req.body;
@@ -61,7 +62,37 @@ const getChapter = asyncHandler(async (req, res) => {
         ));
 });
 
+const getTranslatedChapter = asyncHandler(async (req, res) => {
+    const { title, lang } = req.body;
+
+    if (!title || !lang) {
+        throw new ApiError(404, "Title Not Found.");
+    }
+
+    const contentText = [];
+
+    try {
+        const getBook = await Book.findOne({ title });
+        const content = getBook.content;
+        const translatedContent = await translator(content, lang);
+        Object.keys(translatedContent).forEach(key => {
+            contentText.push(translatedContent[key]);
+        });
+
+        return res
+            .status(200)
+            .json(new ApiResponse(
+                200,
+                { content: contentText },
+                "Translational Successful!"
+            ));
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error.")
+    }
+});
+
 export {
     addChapter,
-    getChapter
+    getChapter,
+    getTranslatedChapter,
 };
